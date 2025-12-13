@@ -14,10 +14,6 @@
 #define M 9 
 #define CLOCK 100000000.0 //clock speed
 
-#define MODE_MAIN   0
-#define MODE_DEBUG  1
-#define MODE_CAL    2
-
 #define DEBUG_NBINS 64
 
 #define RAW_BLOCKS     4
@@ -70,9 +66,6 @@ static QState Tuner_idle    (Tuner *me);
 
 static void Tuner_runOnce(void);    // one complete tuner iteration
 
-
-// forward declaration for helper to read from stream grabber
-static void read_fsl_values(float *q, int n);
 
 // forward declaration for one-time init
 static void Tuner_hwInit(void);
@@ -149,11 +142,11 @@ static QState Tuner_tuner(Tuner *me) {
         }
         case Q_INIT_SIG: {
             BSP_display("Tuner: INIT -> welcome\n");
-            me->mode = MODE_MAIN;
+            me->mode = TUNER_MODE_MAIN;
             return Q_TRAN(&Tuner_welcome);
         }
         case BTN_MAIN_SIG: {
-            me->mode = MODE_MAIN;
+            me->mode = TUNER_MODE_MAIN;
             tuner_draw_home_static();
             tuner_draw_main_header();
             tuner_draw_ref_label(me->ref_a4_hz);   // show current A4
@@ -182,7 +175,7 @@ static QState Tuner_tuner(Tuner *me) {
             return Q_HANDLED();
         }
         case BTN_CAL_SIG: {
-            me->mode = MODE_CAL;
+            me->mode = TUNER_MODE_CAL;
             tuner_draw_cal_header();
             xil_printf("Mode -> CAL\r\n");
             tuner_draw_cal_screen(me->ref_a4_hz);
@@ -349,7 +342,7 @@ static void Tuner_runOnce(void) {
         if (freq_smooth < 1.0f) freq_smooth = 0.0f;
         HSM_Tuner.freq_hz = freq_smooth;
         if (do_ui) {
-            if (HSM_Tuner.mode == MODE_MAIN) {
+            if (HSM_Tuner.mode == TUNER_MODE_MAIN) {
                 if(have_note_displayed){
                 	// clear main display: freq, note, cents
 					tuner_update_display(0.0f, 0);
@@ -357,7 +350,7 @@ static void Tuner_runOnce(void) {
 					tuner_clear_cents_bar();
 					have_note_displayed = 0;
                 }
-            } else if (HSM_Tuner.mode == MODE_DEBUG) {
+            } else if (HSM_Tuner.mode == TUNER_MODE_DEBUG) {
             	float sample_f_eff = sample_f / (float)DECIM_FACTOR;
             	float bin_hz = sample_f_eff / (float)SAMPLES;
                 if (HSM_Tuner.debug_page == 0) {
@@ -414,14 +407,14 @@ static void Tuner_runOnce(void) {
     if (freq_smooth < 10.0f) {
     	HSM_Tuner.freq_hz = freq_smooth;
 		if (do_ui) {
-			if (HSM_Tuner.mode == MODE_MAIN) {
+			if (HSM_Tuner.mode == TUNER_MODE_MAIN) {
 				if(have_note_displayed){
 					tuner_update_display(0.0f, 0);
 					tuner_clear_note_box();
 					tuner_clear_cents_bar();
 					have_note_displayed = 0;
 				}
-			} else if (HSM_Tuner.mode == MODE_DEBUG) {
+			} else if (HSM_Tuner.mode == TUNER_MODE_DEBUG) {
 				float sample_f_eff = sample_f / (float)DECIM_FACTOR;
 				float bin_hz = sample_f_eff / (float)SAMPLES;
 
@@ -459,11 +452,11 @@ static void Tuner_runOnce(void) {
     // mode dependent UI update
     if(do_ui){
     	switch (HSM_Tuner.mode) {
-			case MODE_MAIN:
+			case TUNER_MODE_MAIN:
 				tuner_update_display(freq_smooth, cents);
 				tuner_draw_note_label(noteName, octave);
 				break;
-			case MODE_DEBUG:
+			case TUNER_MODE_DEBUG:
 				if (HSM_Tuner.debug_page == 0) {
 					// page 0: text + spectrum
 					tuner_debug_update(freq_smooth, noteName, octave, cents);
@@ -476,7 +469,7 @@ static void Tuner_runOnce(void) {
 					}
 				}
 				break;
-			case MODE_CAL:
+			case TUNER_MODE_CAL:
 				// no live UI updates here for now
 				break;
 		}

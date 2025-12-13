@@ -92,7 +92,7 @@ int main(void) {
 	BSP_init();
 	BSP_buttons_irq_init();
 	BSP_encoder_init();
-	BSP_encoder_irq_init()
+	BSP_encoder_irq_init();
 
 
 	// HSM construct + init
