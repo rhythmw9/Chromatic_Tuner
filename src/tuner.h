@@ -34,7 +34,6 @@ typedef struct TunerTag {
 	int note_index;
 	int octave;
 	int volume_level;
-	//int mode;
 	TunerMode mode;
 	float ref_a4_hz;
 	int debug_page; 	// 0 = spectrum, 1 = debug page 2
