@@ -155,14 +155,8 @@ Overall performance meets and exceeds the project requirements.
 
 ---
 
-## Notes
-
-This repository focuses on application logic, DSP integration, and UI design.  
-Vendor-generated files, build artifacts, and platform-specific boilerplate are intentionally excluded.
-
----
-
 *Developed by Rhythm Winicour-Freeman*
+
 
 
 
