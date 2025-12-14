@@ -44,6 +44,39 @@ The system is event-driven and designed to remain responsive under rapid button 
 
 ---
 
+### Project Media
+
+All screenshots, diagrams, and demo assets are located in the `/media` folder, including:
+- Vivado block design screenshots (`bd1.png`, `bd2.png`)
+- UI screenshots for each operating mode
+- State machine diagram (`state_diagram.pdf`)
+- Edited demo video (also linked above via YouTube)
+
+---
+
+## Code Organization
+
+The core application logic is split across a small number of focused source files:
+
+- **tuner.c / tuner.h**  
+  Implements the application logic and hierarchical state machine using QP-Nano.  
+  Handles mode transitions, event processing, and coordination between DSP and UI layers.
+
+- **tuner_display.c / tuner_display.h**  
+  Contains all LCD drawing functions and UI helpers.
+
+- **main.c**  
+  Performs system initialization, hardware setup, and drives the main event loop.  
+  Dispatches button, encoder, and timing events into the state machine.
+
+- **fft.c / fft.h (provided)**  
+  FFT implementation supplied by the lab framework and used as the core spectral analysis engine.
+  These files were optimized further during development.
+
+This separation keeps DSP, UI rendering, and control logic cleanly decoupled and easy to reason about.
+
+---
+
 ## Hardware Platform
 
 - Nexys A7 FPGA development board with MicroBlaze soft processor
@@ -95,7 +128,8 @@ This approach allows:
 - Encoder input without blocking or missed events
 - Deterministic behavior even under frequent UI updates
 
-All user interaction is event-driven rather than polled.
+User interaction is handled through events dispatched into the state machine, allowing clean and deterministic handling of button presses and encoder input.
+
 
 ---
 
@@ -129,4 +163,5 @@ Vendor-generated files, build artifacts, and platform-specific boilerplate are i
 ---
 
 *Developed by Rhythm Winicour-Freeman*
+
 
