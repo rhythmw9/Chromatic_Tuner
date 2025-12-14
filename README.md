@@ -87,7 +87,7 @@ The result is a smooth, readable interface suitable for real-time tuning.
 
 ## Control & State Management
 
-The application uses a **hierarchical state machine (QP-Nano)** to manage modes and user input.
+The application uses a hierarchical state machine (QP-Nano) to manage modes and user input.
 
 This approach allows:
 - Clean separation between tuning, debug, calibration, and welcome states
@@ -129,3 +129,4 @@ Vendor-generated files, build artifacts, and platform-specific boilerplate are i
 ---
 
 *Developed by Rhythm Winicour-Freeman*
+
