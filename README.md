@@ -46,7 +46,7 @@ The system is event-driven and designed to remain responsive under rapid button 
 
 ### Project Media
 
-All screenshots, diagrams, and demo assets are located in the `/media` folder, including:
+All screenshots, diagrams, and demo video are located in the `/media` folder, including:
 - Vivado block design screenshots (`bd1.png`, `bd2.png`)
 - UI screenshots for each operating mode
 - State machine diagram (`state_diagram.pdf`)
@@ -163,5 +163,6 @@ Vendor-generated files, build artifacts, and platform-specific boilerplate are i
 ---
 
 *Developed by Rhythm Winicour-Freeman*
+
 
 
